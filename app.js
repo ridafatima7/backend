@@ -30,8 +30,11 @@ app.use('/auth',authRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-
+// app.get('/register',(req, res)=>{
+//    const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password});
+//   first_user.save();
+//   res.send(first_user);
+// });
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
