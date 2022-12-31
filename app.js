@@ -1,11 +1,14 @@
 var createError = require('http-errors');
+
 var mongoose=require('mongoose');
 // const {user}=require("./models/user");
+const sessions=require('express-session');
 var express = require('express');
 const authRouter=require('./routes/auth_routers')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,6 +26,16 @@ app.set('view engine', 'jade');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
+
+const expiry_time=1000*60*60*6;
+app.use(sessions ({
+  secret:'Sargodha ',
+  saveUninitiazlized:true,
+  cookie:{maxAge:expiry_time},
+  resave:false
+  
+}))
+
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
