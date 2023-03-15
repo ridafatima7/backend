@@ -1,0 +1,10 @@
+const express=require('express');
+const router=express.Router();
+const authController=require('../controllers/InformationManagement');
+router.post('/AddInformation' , authController.AddInformation);
+router.get('/GetInformation', authController.GetInformation);
+router.get('/DeleteInformation', authController.DeleteInformation);
+router.post('/EditInformation', authController.EditInformation);
+router.get('/FindInformation', authController.FindInformation);
+// router.get('/FindCourse', authController.FindCourse);
+module.exports=router;

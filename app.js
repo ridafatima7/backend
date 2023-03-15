@@ -2,13 +2,15 @@ var createError = require('http-errors');
 
 var mongoose=require('mongoose');
 // const {user}=require("./models/user");
+const {Information}=require("./models/InformationManagement");
+const InformationRouter=require('./routes/InformationManagement')
 const sessions=require('express-session');
 var express = require('express');
 const authRouter=require('./routes/auth_routers')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const ngoRouter=require('./routes/NGOs')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -42,6 +44,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth',authRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/Information', InformationRouter);
+app.use('/NGOs', ngoRouter);
 
 // app.get('/register',(req, res)=>{
 //    const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password});
