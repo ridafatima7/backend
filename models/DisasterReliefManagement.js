@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-const InformationSchema=new mongoose.Schema({
+const ReliefSchema=new mongoose.Schema({
     dis_type: {
         type: String,
         required: true,
@@ -60,5 +60,5 @@ const InformationSchema=new mongoose.Schema({
       }
       
 });
-const Information = mongoose.model("Information", InformationSchema);
-module.exports = { Information };
+const ReliefInfo = mongoose.model("Relief_Information", ReliefSchema);
+module.exports = { ReliefInfo };

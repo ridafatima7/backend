@@ -21,7 +21,7 @@ async function register(req,res,next){
     {
       if(req.body.password==req.body.confirm_password)
       {
-         const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no});
+         const first_user=new user({name:req.body.name,username:req.body.username,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no,address:req.body.address,account_no:req.body.accountno,description:req.body.description,role:req.body.role}); // add role
          first_user.save();
          res.send('Account registered successfully')
       }
@@ -66,18 +66,45 @@ async function register(req,res,next){
   
 
   }
+  async function registerNGO(req,res,next){
+  
+    user.findOne({email:req.body.email},function(error,docs){
+    if(docs)
+    {
+       
+      res.send('Already have an account')
+    }
+    else
+    {
+      if(req.body.password==req.body.confirm_password)
+      {
+         const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no});
+         first_user.save();
+         res.send('Account registered successfully')
+      }
+      else{
+        res.send('password doesnt matches ,plz try again')
+      }
+
+    }
+});
+}
 async function validate(req,res,next)
 {
   // ({$and:[{email:req.body.email},{password:req.body.password}]},function(error,docs)
   user.findOne({email:req.body.email,password:req.body.password},function(error,docs)
   {
     if(docs){
-      res.status(200).send(docs)
-    
+      
+      // req.session.user = {"email": req.body.email};
+      req.session.user = docs;
+      req.session.save();
+      res.status(200).send(docs);
    }
     else
     {
-      res.status(404).send(error)
+      res.status(404).send('invalid credientials');
+      // res.status(404).send(error)
       // res.send('error');
       // res.send(req.session);
       
@@ -103,5 +130,41 @@ async function validate(req,res,next)
   // res.send('data added');
   
 }
+async function Donations(req,res,next){
+  
+  // user.findOne({email:req.body.email},function(error,docs){
+  // if(docs)
+  // {
+     
+  //   res.send('Already have an account')
+  // }
+  // else
+  // {
+    // if(req.body.password==req.body.confirm_password)
+    // {
+       const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no});
+       first_user.save();
+       res.send('Donated Successfully')
+    // }
+    // else{
+    //   res.send('password doesnt matches ,plz try again')
+    // }
 
-module.exports={get_data,get_marks,validate,register};
+   //}
+//});
+}
+async function logout(req, res, next) {
+  req.session.destroy(err => {
+    if (err) 
+    {
+      res.send(err);
+    } else {
+      
+      res.send('success'); // Redirect to the login page or any other page
+    }
+  });
+}
+
+
+
+module.exports={get_data,get_marks,validate,register,registerNGO,Donations,logout};

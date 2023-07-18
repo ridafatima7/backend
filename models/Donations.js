@@ -4,10 +4,6 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    username:{
-        type:String,
-        required:true,
-    },
     email:{
         type:String,
         required:true,
@@ -23,26 +19,14 @@ const userSchema=new mongoose.Schema({
     phone_no:{
         type:Number,
         required:true,
-    },
-    role:{
-        type:String,
-        required:true,
-    },
-    address:{
-        type:String,
-        required:true,
-    },
-    account_no:{
-        type:Number,
-        required:true,
-    },
-    description:{
-        type:String,
-        required:true,
     }
-
+    
+    // role:{
+    //     type:String,
+    //     required:true,
+    // }
 
 });
 
-const user=mongoose.model("user",userSchema);
-module.exports={user};
+const donation=mongoose.model("donation",userSchema);
+module.exports={donation};

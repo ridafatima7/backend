@@ -2,20 +2,21 @@ var createError = require('http-errors');
 
 var mongoose=require('mongoose');
 // const {user}=require("./models/user");
+// const sessions=require('express-session');
 const {Information}=require("./models/InformationManagement");
 const InformationRouter=require('./routes/InformationManagement')
-const sessions=require('express-session');
+const ReliefInfoRouter=require('./routes/ReliefManagement')
+const ContactRouter=require('./routes/ContactUs')
 var express = require('express');
 const authRouter=require('./routes/auth_routers')
+const donationRouter=require('./routes/donations')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const ngoRouter=require('./routes/NGOs')
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
-var cors=require('cors');
 const string='mongodb+srv://ridafatima:151214%40bar@cluster0.etq7ux9.mongodb.net/disasterinformationcell';
 mongoose.connect(string).then((result)=>app.listen(4000))
 .catch((error)=> console.log((error)));
@@ -25,18 +26,51 @@ mongoose.connect(string).then((result)=>app.listen(4000))
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(cors());
+// app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 
-const expiry_time=1000*60*60*6;
-app.use(sessions ({
-  secret:'Sargodha ',
-  saveUninitiazlized:true,
-  cookie:{maxAge:expiry_time},
-  resave:false
-  
+var cors=require('cors');
+app.use(cors({ credentials: true, origin: true }))
+
+app.options('*', cors());
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  next();
+});
+
+const session = require('express-session');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+app.use(cookieParser('secret', {
+  cookie: {
+    httpOnly: false,
+    path: '/',
+    domain: 'localhost',
+    expires: new Date(Date.now() + 900000),
+    maxAge: 900000,
+    secure: false
+  }
+}));
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+  secret: "secret"
 }))
+
+// const expiry_time=1000*60*60*6;
+// app.use(sessions ({
+//   secret:'Sargodha ',
+//   saveUninitiazlized:true,
+//   cookie:{maxAge:expiry_time},
+//   resave:false
+  
+// }))
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -46,6 +80,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/Information', InformationRouter);
 app.use('/NGOs', ngoRouter);
+app.use('/ContactUs', ContactRouter);
+app.use('/donations', donationRouter)
+app.use('/Relief_Information', ReliefInfoRouter);
 
 // app.get('/register',(req, res)=>{
 //    const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password});
