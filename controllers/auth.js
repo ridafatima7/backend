@@ -165,6 +165,44 @@ async function logout(req, res, next) {
   });
 }
 
+async function EditProfile(req,res,next)
+{
+  const file = req.file;
+  const file_path = file.path;
+  if(file_path)
+  {
+    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name, email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no, role:req.body.role,User_img:file_path}, function(error,docs)
+    {
+      if(error)
+      {
+        res.send("Failed to update the  Record");
+      }
+      else
+      {
+       res.send("success");
+      }
+        
+        // res.send(docs);
+      })
+  }
+  else
+  {
+    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name,email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no, role:req.body.role}, function(error,docs)
+    {
+      if(error)
+      {
+        res.send("Failed to update the  Record");
+      }
+      else
+      {
+       res.send("success");
+      }
+        
+        // res.send(docs);
+      })
+  }
+  
+ };
 
 
-module.exports={get_data,get_marks,validate,register,registerNGO,Donations,logout};
+module.exports={get_data,get_marks,validate,register,registerNGO,Donations,logout,EditProfile};
