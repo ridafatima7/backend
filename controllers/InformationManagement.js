@@ -67,8 +67,8 @@ async function FindInformation(req, res, next) {
 async function EditInformation(req, res, next) {
   const role = req.session.user.role;
   if (role == "NGO") {
-    Information.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), { dis_type: req.body.disasterType, dis_title: req.body.title, dis_area: req.body.area, dis_coordinatesX: req.body.xcoordinates,dis_coordinatesY: req.body.ycoordinates, population: req.body.population 
-      ,survivors: req.body.survivors,deaths: req.body.deaths,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,gallery: req.body.gallery,added_by: req.session.user._id }, function (error, docs) {
+    Information.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), { dis_type: req.body.disasterType, dis_title: req.body.title, population: req.body.population 
+      ,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,gallery: req.body.gallery,added_by: req.session.user._id }, function (error, docs) {
       if (error) {
         res.send("Failed to update the Information");
       }

@@ -1,6 +1,10 @@
 const mongoose=require("mongoose");
 const ReliefSchema=new mongoose.Schema({
-    dis_type: {
+    Ngo_Name: {
+      type: String,
+      required: true,
+    }, 
+     dis_type: {
         type: String,
         required: true,
       }, 
@@ -8,29 +12,8 @@ const ReliefSchema=new mongoose.Schema({
         type: String,
         required: true,
       },
-      dis_area:{
-        type: String,
-        required:true,
-      },
-      dis_coordinatesX:{
-        type: String,
-        required:true,
-      },
-      dis_coordinatesY:{
-        type: String,
-        required:true,
-      },
       population:{
         type:Number,
-        required:true,
-
-      },
-      survivors:{
-        type:Number,
-        required:true,
-      },
-      deaths:{
-        type: Number,
         required:true,
       },
       date:{
@@ -51,12 +34,10 @@ const ReliefSchema=new mongoose.Schema({
       },
       gallery:{
         type: String,
-        required:true,
       },
       added_by:{
         type:String,
         required:true,
-
       }
       
 });

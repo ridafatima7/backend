@@ -8,11 +8,11 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    password:{
+    address:{
         type:String,
         required:true,
     },
-    confirm_password:{
+   username:{
         type:String,
         required:true,
     },
@@ -28,5 +28,5 @@ const userSchema=new mongoose.Schema({
 
 });
 
-const donation=mongoose.model("donation",userSchema);
-module.exports={donation};
+const Donation=mongoose.model("Donations",userSchema);
+module.exports={Donation};

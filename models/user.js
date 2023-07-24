@@ -39,6 +39,12 @@ const userSchema=new mongoose.Schema({
     description:{
         type:String,
         required:true,
+    },
+    bio:{
+        type:String
+    },
+    User_img:{
+        type:String,
     }
 
 

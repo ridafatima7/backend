@@ -1,7 +1,8 @@
 const e = require("express");
+var mongoose=require('mongoose');
 const {Contact_Us}=require("../models/ContactUs");
 async function Contactus(req,res,next){
-         const message=new Contact_Us({name:req.body.name,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no});
+         const message=new Contact_Us({name:req.body.name,email:req.body.email,subject:req.body.subject,message:req.body.message});
          message.save();
          res.send('Response Received')
 }

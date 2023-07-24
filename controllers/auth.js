@@ -1,5 +1,5 @@
 const e = require("express");
-
+var mongoose=require('mongoose');
 const {user}=require("../models/user");
 async function get_data(req,res,next)
 {
@@ -142,7 +142,7 @@ async function Donations(req,res,next){
   // {
     // if(req.body.password==req.body.confirm_password)
     // {
-       const first_user=new user({name:req.body.name,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no});
+       const first_user=new user({name:req.body.name,email:req.body.email,address:req.body.address,username:req.body.username,phone_no:req.body.phone_no});
        first_user.save();
        res.send('Donated Successfully')
     // }
@@ -167,19 +167,23 @@ async function logout(req, res, next) {
 
 async function EditProfile(req,res,next)
 {
-  const file = req.file;
-  const file_path = file.path;
+  file_path = null
+  if(req.file)
+  {
+    const file = req.file;
+    file_path = file.path;
+  }
   if(file_path)
   {
-    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name, email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no, role:req.body.role,User_img:file_path}, function(error,docs)
+    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name, email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no,bio:req.body.bio, role:req.body.role,User_img:file_path}, function(error,docs)
     {
       if(error)
       {
-        res.send("Failed to update the  Record");
+        res.send({"indicator": "error", "messege": "Failed to update your profile" });
       }
       else
       {
-       res.send("success");
+        res.send({'indicator': 'success', 'path' : file_path, "messege": "Profile Updated successfully" })
       }
         
         // res.send(docs);
@@ -187,15 +191,15 @@ async function EditProfile(req,res,next)
   }
   else
   {
-    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name,email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no, role:req.body.role}, function(error,docs)
+    user.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {name:req.body.name,email:req.body.email, address:req.body.address, Phone_no:req.body.phone_no,bio:req.body.bio, role:req.body.role}, function(error,docs)
     {
       if(error)
       {
-        res.send("Failed to update the  Record");
+        res.send({"indicator": "error", "messege": err });
       }
       else
       {
-       res.send("success");
+        res.send({'indicator': 'success', 'path' : null, "messege": "Profile Updated successfully" })
       }
         
         // res.send(docs);

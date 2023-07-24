@@ -17,6 +17,9 @@ const ngoRouter=require('./routes/NGOs')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
+
+const multer = require('multer');
+
 const string='mongodb+srv://ridafatima:151214%40bar@cluster0.etq7ux9.mongodb.net/disasterinformationcell';
 mongoose.connect(string).then((result)=>app.listen(4000))
 .catch((error)=> console.log((error)));
@@ -62,6 +65,20 @@ app.use(session({
   cookie: { secure: false },
   secret: "secret"
 }))
+
+// define the storage for the files
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'public/uploads/'); // Specify the destination directory
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      const extension = path.extname(file.originalname);
+      cb(null, file.fieldname + '-' + uniqueSuffix + extension); // Specify the file name
+    },
+  });
+  
+  const upload = multer({ storage });
 
 // const expiry_time=1000*60*60*6;
 // app.use(sessions ({

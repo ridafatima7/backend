@@ -14,11 +14,11 @@ const InformationSchema=new mongoose.Schema({
       },
       dis_coordinatesX:{
         type: String,
-        required:true,
+        
       },
       dis_coordinatesY:{
         type: String,
-        required:true,
+        
       },
       population:{
         type:Number,
@@ -27,11 +27,11 @@ const InformationSchema=new mongoose.Schema({
       },
       survivors:{
         type:Number,
-        required:true,
+        
       },
       deaths:{
         type: Number,
-        required:true,
+        
       },
       date:{
         type: String,
@@ -51,7 +51,7 @@ const InformationSchema=new mongoose.Schema({
       },
       gallery:{
         type: String,
-        required:true,
+        
       },
       added_by:{
         type:String,
