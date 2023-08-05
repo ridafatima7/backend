@@ -9,25 +9,43 @@ async function get_marks(req,res,next)
 {
   res.send(req.query.marks);
 }
+async function GetUser(req, res, next) {
+  const filter = {};
+  const AllInformation = await user.find(filter);
+  res.send(AllInformation);
+
+}
 async function register(req,res,next){
   
-    user.findOne({email:req.body.email},function(error,docs){
-    if(docs)
+    user.findOne({email:req.body.email},function(error,docs)
     {
+     if(docs)
+     {
        
       res.send('Already have an account')
-    }
-    else
-    {
-      if(req.body.password==req.body.confirm_password)
+     }
+     else
+     {
+      user.findOne({username:req.body.username},function(error1,docs1)
       {
-         const first_user=new user({name:req.body.name,username:req.body.username,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no,address:req.body.address,account_no:req.body.accountno,description:req.body.description,role:req.body.role}); // add role
-         first_user.save();
-         res.send('Account registered successfully')
-      }
-      else{
-        res.send('password doesnt matches ,plz try again')
-      }
+        if(docs1)
+        {
+          res.send('Username already exists!')
+        }
+        else
+        {
+          const first_user=new user({name:req.body.name,username:req.body.username,email:req.body.email,password:req.body.password,confirm_password:req.body.confirm_password,phone_no:req.body.phone_no,address:req.body.address,account_no:req.body.accountno,description:req.body.description,role:req.body.role}); // add role
+          first_user.save();
+          res.send('Account registered successfully')
+        }
+      })
+      // if(req.body.password==req.body.confirm_password)
+      // {
+         
+      // }
+      // else{
+      //   res.send('password doesnt matches ,plz try again')
+      // }
 
     }
 });
@@ -164,6 +182,10 @@ async function logout(req, res, next) {
     }
   });
 }
+// async function Editpicture(req, res, next)
+// {
+
+// }
 
 async function EditProfile(req,res,next)
 {
@@ -209,4 +231,4 @@ async function EditProfile(req,res,next)
  };
 
 
-module.exports={get_data,get_marks,validate,register,registerNGO,Donations,logout,EditProfile};
+module.exports={get_data,get_marks,validate,register,registerNGO,GetUser,logout,EditProfile};

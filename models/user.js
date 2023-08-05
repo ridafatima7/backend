@@ -16,13 +16,9 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    confirm_password:{
-        type:String,
-        required:true,
-    },
     phone_no:{
         type:Number,
-        required:true,
+        // required:true,
     },
     role:{
         type:String,
@@ -30,15 +26,15 @@ const userSchema=new mongoose.Schema({
     },
     address:{
         type:String,
-        required:true,
+        // required:true,
     },
     account_no:{
         type:Number,
-        required:true,
+        // required:true,
     },
     description:{
         type:String,
-        required:true,
+        // required:true,
     },
     bio:{
         type:String

@@ -2,21 +2,23 @@ var mongoose = require('mongoose');
 const { Information } = require("../models/InformationManagement");
 
 async function AddInformation(req, res, next) {
-  if (req.session.user) {
+  
+  if (req.session.user)
+   {
     const role = req.session.user.role;
-    if (role == "NGO") {
-      const first_Information = new Information({ dis_type: req.body.disasterType, dis_title: req.body.title, dis_area: req.body.area, dis_coordinatesX: req.body.xcoordinates,dis_coordinatesY: req.body.ycoordinates, population: req.body.population,survivors: req.body.survivors, 
+    if (role == "DEO" || role == "admin") {
+      const first_Information = new Information({ dis_type: req.body.disasterType, dis_title: req.body.title,Description:req.body.Description, dis_area: req.body.area, dis_coordinatesX: req.body.xcoordinates,dis_coordinatesY: req.body.ycoordinates, population: req.body.population,survivors: req.body.survivors, 
         deaths: req.body.deaths,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,gallery: req.body.gallery,added_by: req.session.user._id });
       first_Information.save().then((result) => res.send("success"))
         .catch((error) => res.send(error));
 
     }
     else {
-      res.status(403).send("Forbidden");
+      res.status(403).send("forbidden,Try again");
     }
   }
   else {
-    res.status(403).send("Forbidden");
+    res.status(403).send("Forbidden, Login First");
   }
   //   Information.findOne({Course_code:req.body.course_code},function(error,docs)
   //   {
@@ -31,16 +33,34 @@ async function AddInformation(req, res, next) {
   // }
   //   })
 }
-
 async function GetInformation(req, res, next) {
-  const filter = {};
-  const AllInformation = await Information.find(filter);
+   const Role=req.session.user.role;
+   const filter = {};
+    if(Role=="DEO" || Role=="admin" || Role == "NGO" )
+    {
+      const AllInformation = await Information.find(filter);
+      res.send(AllInformation);
+    }
+    else
+    {
+       res.send("Failed to Fetch Data");
+    }
+}
+async function GetDisaster(req, res, next) {
+  // const filter = {};
+  const id=req.query.id
+  const AllInformation = await Information.find({_id:id});
   res.send(AllInformation);
 
 }
+async function GetInformationHome(req, res, next) {
+  const filter = {};
+  const AllInformation = await Information.find(filter);
+  res.send(AllInformation);
+}
 async function DeleteInformation(req, res, next) {
   const role = req.session.user.role;
-  if (role == "NGO") {
+  if (role == "DEO" || role == "admin") {
     Information.findByIdAndRemove({ _id: mongoose.Types.ObjectId(req.query.temp_id) }, (err) => {
 
       if (err) {
@@ -66,8 +86,8 @@ async function FindInformation(req, res, next) {
 
 async function EditInformation(req, res, next) {
   const role = req.session.user.role;
-  if (role == "NGO") {
-    Information.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), { dis_type: req.body.disasterType, dis_title: req.body.title, population: req.body.population 
+  if (role == "DEO" || role == "admin") {
+    Information.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), { dis_type: req.body.disasterType, dis_title: req.body.title, description:req.body.Description, population: req.body.population 
       ,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,gallery: req.body.gallery,added_by: req.session.user._id }, function (error, docs) {
       if (error) {
         res.send("Failed to update the Information");
@@ -84,4 +104,4 @@ async function EditInformation(req, res, next) {
   }
 
 };
-module.exports = { AddInformation, GetInformation, DeleteInformation, EditInformation, FindInformation }
+module.exports = { AddInformation,GetInformationHome,GetDisaster, GetInformation, DeleteInformation, EditInformation, FindInformation }

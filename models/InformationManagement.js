@@ -8,6 +8,10 @@ const InformationSchema=new mongoose.Schema({
         type: String,
         required: true,
       },
+      Description: {
+        type: String,
+        required: true,
+      },
       dis_area:{
         type: String,
         required:true,
@@ -49,6 +53,7 @@ const InformationSchema=new mongoose.Schema({
         type: Number,
         required:true,
       },
+      
       gallery:{
         type: String,
         

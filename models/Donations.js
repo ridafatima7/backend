@@ -8,11 +8,11 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    address:{
+    Amount:{
         type:String,
         required:true,
     },
-   username:{
+    NGO:{
         type:String,
         required:true,
     },
