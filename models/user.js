@@ -16,35 +16,46 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    phone_no:{
-        type:Number,
-        // required:true,
-    },
     role:{
         type:String,
         required:true,
+    },
+    phone_no:{
+        type:String,
+        // required:true,
     },
     address:{
         type:String,
         // required:true,
     },
     account_no:{
-        type:Number,
+        type:String,
         // required:true,
+    },
+    Account_Type:{
+        type:String,
+    },
+
+    Total_Donations:{
+        type:Number,
+        default: 0
     },
     description:{
         type:String,
-        // required:true,
     },
     bio:{
         type:String
     },
     User_img:{
         type:String,
-    }
+    },
+    Status:{
+        type:String,
+    },
 
 
-});
+
+}, { timestamps: true });
 
 const user=mongoose.model("user",userSchema);
 module.exports={user};

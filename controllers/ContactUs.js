@@ -18,7 +18,7 @@ async function FindMessages(req, res, next) {
 };
 async function DeleteMessages(req, res, next) {
     const role = req.session.user.role;
-    if (role == "NGO") {
+    if (role == "admin") {
         Contact_Us.findByIdAndRemove({ _id: mongoose.Types.ObjectId(req.query.temp_id) }, (err) => {
         if (err) {
           res.send({ "indicator": "error", "messege": err });

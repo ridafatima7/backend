@@ -7,8 +7,10 @@ async function AddInformation(req, res, next) {
   if (req.session.user) {
     const role = req.session.user.role;
     if (role == "NGO" || role == "DEO" || role == "admin" ) {
-      const first_Information = new ReliefInfo({ Ngo_Name:req.body.ngoname,dis_type: req.body.disasterType, dis_title: req.body.title,description:req.body.Description, population: req.body.population, 
-       date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,Thumbnail:req.body.thumbnail,added_by: req.session.user._id, gallery: filePaths });
+      const first_Information = new ReliefInfo({ Ngo_Name:req.body.ngoname,dis_type: req.body.disasterType, dis_title: req.body.title,
+                                          description:req.body.Description, population: req.body.population, 
+                                          date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,
+                            Thumbnail:req.body.thumbnail,added_by: req.session.user._id, gallery: filePaths });
       first_Information.save().then((result) => res.send("success"))
         .catch((error) => res.send(error));
 
@@ -38,24 +40,31 @@ async function GetInformation(req, res, next) {
   const filter = {};
    const Role=req.session.user.role;
    const roleId=req.session.user._id;
-   if(Role=="NGO" ||  Role=="admin" || Role=="DEO")
+   if(Role==="NGO"  || Role==="DEO")
    {
     const AllInformation = await ReliefInfo.find({added_by : roleId}); 
     res.send(AllInformation);
    }
-    else
-    {
+   else if(Role==="admin")
+   {
       const AllInformation = await ReliefInfo.find(filter);
       res.send(AllInformation);
-    }
+   }
+   else{
+    res.send("please login first");
+   }
   
 } 
 async function GetInformationHome(req, res, next) {
   const filter = {};
+      const AllInformation = await ReliefInfo.find(filter).limit(6)
+      res.send(AllInformation);
+} 
+async function GetInformationDetail(req, res, next) {
+  const filter = {};
       const AllInformation = await ReliefInfo.find(filter)
       res.send(AllInformation);
 } 
-
 async function DeleteInformation(req, res, next) {
   const role = req.session.user.role;
   if (role == "NGO" || role == "DEO" || role == "admin" ) {
@@ -86,10 +95,13 @@ async function FindInformation(req, res, next) {
 
 async function EditInformation(req, res, next) {
   const role = req.session.user.role;
+   const filePaths = req.files.map(file => file.path);
+   console.log("LENGTH: " + filePaths.length)
   if (role == "NGO" || role == "DEO" || role == "admin" ) {
 
+    if(filePaths.length > 0){
     ReliefInfo.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {Ngo_Name:req.body.ngoname,dis_type: req.body.disasterType, dis_title: req.body.title, description:req.body.Description, population: req.body.population 
-      ,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,gallery: req.body.gallery,added_by: req.session.user._id }, function (error, docs) {
+      ,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,added_by: req.session.user._id, gallery: filePaths}, function (error, docs) {
       if (error) {
         res.send("Failed to update the Information");
       }
@@ -99,6 +111,22 @@ async function EditInformation(req, res, next) {
 
       // res.send(docs);
     })
+  }
+  else
+  {
+    console.log("gallery empty")
+    ReliefInfo.findByIdAndUpdate(mongoose.Types.ObjectId(req.body.id), {Ngo_Name:req.body.ngoname,dis_type: req.body.disasterType, dis_title: req.body.title, description:req.body.Description, population: req.body.population 
+      ,date: req.body.date,shelters: req.body.shelters,food: req.body.food,medicine: req.body.medicine,added_by: req.session.user._id}, function (error, docs) {
+      if (error) {
+        res.send("Failed to update the Information");
+      }
+      else {
+        res.send("success");
+      }
+
+      // res.send(docs);
+    })
+  }
   }
   else {
     res.status(403).send("Forbidden");
@@ -110,4 +138,4 @@ async function GetReliefActivity(req, res, next) {
   const AllInformation = await ReliefInfo.find({_id:id});
   res.send(AllInformation);
 }
-module.exports = { GetReliefActivity,AddInformation, GetInformationHome, GetInformation, DeleteInformation, EditInformation, FindInformation }
+module.exports = { GetInformationDetail,GetReliefActivity,AddInformation, GetInformationHome, GetInformation, DeleteInformation, EditInformation, FindInformation }

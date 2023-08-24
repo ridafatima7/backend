@@ -21,7 +21,7 @@ const NGOsSchema=new mongoose.Schema({
         required:true,
     }
 
-});
+}, { timestamps: true });
 
 const ngo=mongoose.model("ngo",NGOsSchema);
 module.exports={ngo};

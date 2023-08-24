@@ -36,10 +36,6 @@ const ReliefSchema=new mongoose.Schema({
       type: Number,
       required:true,
     },
-    Thumbnail:{
-      type: String,
-      
-    },
     gallery:{
       type: [String],
     },
@@ -48,6 +44,6 @@ const ReliefSchema=new mongoose.Schema({
       required:true,
     }
       
-});
+}, { timestamps: true });
 const ReliefInfo = mongoose.model("Relief_Information", ReliefSchema);
 module.exports = { ReliefInfo };

@@ -16,8 +16,8 @@ const ContactUsSchema=new mongoose.Schema({
         type:String,
         required:true,
     }
+     }   , { timestamps: true });
 
-});
 
 const Contact_Us=mongoose.model("ContactUs",ContactUsSchema);
 module.exports={Contact_Us};

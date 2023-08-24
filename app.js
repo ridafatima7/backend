@@ -17,8 +17,9 @@ const ngoRouter=require('./routes/NGOs')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var app = express();
-
 const multer = require('multer');
+
+
 
 const string='mongodb+srv://ridafatima:151214%40bar@cluster0.etq7ux9.mongodb.net/disasterinformationcell';
 mongoose.connect(string).then((result)=>app.listen(4000))
@@ -35,7 +36,6 @@ app.use(express.json());
 
 var cors=require('cors');
 app.use(cors({ credentials: true, origin: true }))
-
 app.options('*', cors());
 
 app.use(function(req, res, next) {

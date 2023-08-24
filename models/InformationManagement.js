@@ -16,14 +16,7 @@ const InformationSchema=new mongoose.Schema({
         type: String,
         required:true,
       },
-      dis_coordinatesX:{
-        type: String,
-        
-      },
-      dis_coordinatesY:{
-        type: String,
-        
-      },
+     
       population:{
         type:Number,
         required:true,
@@ -55,8 +48,7 @@ const InformationSchema=new mongoose.Schema({
       },
       
       gallery:{
-        type: String,
-        
+        type: [String],
       },
       added_by:{
         type:String,
@@ -64,6 +56,6 @@ const InformationSchema=new mongoose.Schema({
 
       }
       
-});
+      }, { timestamps: true });
 const Information = mongoose.model("Information", InformationSchema);
 module.exports = { Information };
